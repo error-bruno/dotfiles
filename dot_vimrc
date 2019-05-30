@@ -1,0 +1,122 @@
+let mapleader = ","
+set relativenumber
+set cursorline
+set signcolumn=yes " Display gutter
+set encoding=UTF-8
+set guifont=Roboto\ Mono\ Light\ Nerd\ Font:h11
+set hidden
+
+syntax on
+
+filetype plugin indent on
+
+" Colors
+set t_Co=256
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+" Set tabstops
+set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+set showcmd            "  show command in bottom bar
+set wildmenu           "  visual autocomplete for command menu
+set showmatch          "  highlight matching [{()}]
+
+" show invisible
+set list
+set listchars=
+set listchars+=tab:·\ 
+set listchars+=trail:·
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=nbsp:░
+
+" search
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+nnoremap <leader><space> :nohlsearch<CR> " unhilights matches
+set ignorecase
+set smartcase
+
+" Don't auto save backups
+set nobackup
+set nowritebackup
+
+inoremap ' ''<left>
+inoremap ` ``<left>
+inoremap " ""<left>
+
+" Nerdtree
+let NERDTreeShowHidden=1
+function! StartUp()
+  if 0 == argc()
+    NERDTree
+  end
+endfunction
+autocmd VimEnter * call StartUp()
+let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
+let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
+let NERDTreeNodeDelimiter = "\u263a" " smiley face
+
+" DevIcons
+" adding to vim-airline's tabline
+let g:webdevicons_enable_airline_tabline = 1
+" adding to vim-airline's statusline
+let g:webdevicons_enable_airline_statusline = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+" vim-javascript
+let g:javascript_plugin_flow = 1
+
+" ctrlp 
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+" gitgutter
+let g:gitgutter_async=0
+let g:gitgutter_realtime = 1
+let g:gitgutter_eager = 1
+set updatetime=250
+
+" ale
+let g:ale_fixers = {
+ \ 'javascript': ['eslint']
+ \ }
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠️'
+let g:ale_fix_on_save = 1
+
+" PLUGINS
+"
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+
+Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdcommenter'
+Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+Plug 'neoclide/coc-eslint'
+Plug 'neoclide/coc-python'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'w0rp/ale'
+Plug 'airblade/vim-gitgutter'
+Plug 'ryanoasis/vim-devicons'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'tmsvg/pear-tree'
+Plug 'morhetz/gruvbox'
+
+call plug#end()
+colorscheme gruvbox
+set bg=dark
+let g:gruvbox_contrast_dark = 'soft'
+let g:airline_theme = 'gruvbox'
