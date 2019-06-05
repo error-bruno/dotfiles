@@ -4,9 +4,10 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/ara.bruno/.oh-my-zsh"
 export UBER_LDAP_UID=ara.bruno
-export UBER_HOME="~/code/uber/"
+export UBER_HOME="/Users/ara.bruno/code/uber/"
 export UBER_OWNER=ara.bruno@uber.com
 export PATH="$HOME/.tmuxifier/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 export NVM_DIR=~/.nvm
 export EDITOR=/usr/bin/vim
 source $(brew --prefix nvm)/nvm.sh
@@ -107,3 +108,5 @@ prompt_context(){}
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -r /Users/ara.bruno/.profile_lda ] && . /Users/ara.bruno/.profile_lda
+cn () { CN_PATH="$(/Users/ara.bruno/.nvm/versions/node/v8.15.1/lib/node_modules/@uber/change-node/change-node run $@)" && PATH="${CN_PATH:-$PATH}"; } # change-node t.uber.com/change-node
