@@ -1,18 +1,27 @@
-let mapleader = ","
 set relativenumber
+set number
 set cursorline
 set signcolumn=yes " Display gutter
 set encoding=UTF-8
-set guifont=Roboto\ Mono\ Light\ Nerd\ Font:h11
+"set guifont=Roboto\ Mono\ Light\ Nerd\ Font:h11
+"set guifont=Roboto\ Mono\ Light\ Nerd\ Font:h11
 set hidden
+set showtabline=2
 
 syntax on
 
-filetype plugin indent on
+" mapleaders
+let mapleader = ","
+map <leader>n :NERDTreeToggle<CR>
+map <leader>t :TagbarToggle<CR>
+nnoremap <leader>r :source ~/.vimrc<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
 
-" Colors
-set t_Co=256
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" nmap
+nmap <C-p> :Files<CR>
+
+filetype plugin indent on
 
 " Set tabstops
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
@@ -23,7 +32,7 @@ set showmatch          "  highlight matching [{()}]
 " show invisible
 set list
 set listchars=
-set listchars+=tab:·\ 
+set listchars+=tab:·\·
 set listchars+=trail:·
 set listchars+=extends:»
 set listchars+=precedes:«
@@ -39,39 +48,27 @@ set smartcase
 " Don't auto save backups
 set nobackup
 set nowritebackup
-
-inoremap ' ''<left>
-inoremap ` ``<left>
-inoremap " ""<left>
+set noswapfile
 
 " Nerdtree
 let NERDTreeShowHidden=1
-function! StartUp()
-  if 0 == argc()
-    NERDTree
-  end
-endfunction
-autocmd VimEnter * call StartUp()
 let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
 let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
 let NERDTreeNodeDelimiter = "\u263a" " smiley face
 
-" DevIcons
-" adding to vim-airline's tabline
-let g:webdevicons_enable_airline_tabline = 1
-" adding to vim-airline's statusline
-let g:webdevicons_enable_airline_statusline = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+nnoremap <c-\> :NERDTreeToggle<CR>
+let g:NERDTreeHighlightFolders = 1
+let g:NERDTreeHighlightFoldersFullName = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1 " enable folder glyph flag
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
 
-" Airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+" DevIcons
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 
 " vim-javascript
 let g:javascript_plugin_flow = 1
-
-" ctrlp 
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 " gitgutter
 let g:gitgutter_async=0
@@ -81,42 +78,34 @@ set updatetime=250
 
 " ale
 let g:ale_fixers = {
- \ 'javascript': ['eslint']
+ \ 'javascript': ['eslint'],
+ \ 'python': ['autopep8', 'remove_trailing_lines', 'trim_whitespace'],
+ \ '*': ['remove_trailing_lines', 'trim_whitespace'],
  \ }
+let g:ale_linters = {
+ \ 'python': ['pylint']
+ \}
+let g:ale_linters_ignore = ['tsserver']
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 1
+let g:ale_sign_column_always = 1
 
-" PLUGINS
-"
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+" deoplete
+let g:deoplete#enable_at_startup = 1
 
-call plug#begin()
+" coc
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other
+" plugin.
+inoremap <silent><expr> <TAB>
+ \ pumvisible() ? "\<C-n>" :
+ \ <SID>check_back_space() ? "\<TAB>" :
+ \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <silent><expr> <c-space> coc#refresh()
 
-Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'scrooloose/nerdcommenter'
-Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
-Plug 'neoclide/coc-eslint'
-Plug 'neoclide/coc-python'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plug 'w0rp/ale'
-Plug 'airblade/vim-gitgutter'
-Plug 'ryanoasis/vim-devicons'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'pangloss/vim-javascript'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'tmsvg/pear-tree'
-Plug 'morhetz/gruvbox'
-
-call plug#end()
-colorscheme gruvbox
-set bg=dark
-let g:gruvbox_contrast_dark = 'soft'
-let g:airline_theme = 'gruvbox'
+so ~/.vim/plugins.vim
+so ~/.vim/status-line.vim
+so ~/.vim/theme.vim
+so ~/.vim/highlight.vim
